@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import HelloJH from './components/HelloJH.vue'
+import { RouterView } from "vue-router";
+
 </script>
 
 <template>
-  <div>
-    <a href="https://github.com/zjutjh" target="_blank">
-      <img src="./assets/logo.jpg" class="logo" alt="JH logo" />
-    </a>
-  </div>
-  <HelloJH msg="2022寒假集训-前端" />
+  <RouterView></RouterView>
 </template>
 
 <style scoped>
