@@ -1,18 +1,30 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import loginAPI from "../apis/login";
-import checkoutSession from "../apis/checkSession";
+import checkSessionAPI from "../apis/checkSession";
+import { useRouter } from "vue-router";
+import { ConstantTypes } from "@vue/compiler-core";
 
+const router = useRouter();
+
+const isLoginSuccess = ref(false);
 const username = ref("");
 const password = ref("");
 
+const checkSession = async () => {
+  const res = await checkSessionAPI();
+  console.log("checkSession", res);
+}
 
 const autoLogin = async () => {
   const res = await loginAPI();
-  if (res.data.code == "200"){
+  if (res.data.code === "200") {
     console.log("自动登录成功");
+    isLoginSuccess.value = true;
+    router.push("home");
+  } else {
+    console.log("自动登录失败");
   }
-  else console.log("自动登录失败");
 }
 
 const onClick = async () => {
@@ -21,14 +33,18 @@ const onClick = async () => {
     password: password.value
   });
   console.log(res);
+  if (res.data.code === "200") {
+    console.log("登录成功");
+    isLoginSuccess.value = true;
+    router.push("home");
+  } else {
+    console.log("登录失败");
+  }
 }
 
-const handleCheck = async () => {
-  const res = await checkoutSession();
-  console.log("checkSession", res);
-}
-
-autoLogin();
+onMounted(() => {
+  autoLogin();
+})
 
 </script>
 
@@ -43,6 +59,9 @@ autoLogin();
     <input v-model="password" id="password" />
   </div>
 
+  <div id="testNextTick">nexttick</div>
+
   <button @click="onClick">submit</button>
-  <button @click="handleCheck">checkSession</button>
+  <button @click="checkSession">checkSession</button>
+  <RouterView></RouterView>
 </template>

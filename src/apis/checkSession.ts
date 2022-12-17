@@ -1,11 +1,11 @@
 import request from "./request";
 
-const checkoutSession = () => {
+const checkSessionAPI = () => {
   return request({
-    withCredentials: false,
+    withCredentials: true,
     method: "get",
     url: "/api/checkSession",
   })
 }
 
-export default checkoutSession;
+export default checkSessionAPI;
